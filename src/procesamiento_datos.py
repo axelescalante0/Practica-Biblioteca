@@ -38,3 +38,5 @@ junto_df = pd.read_csv('data/procesados/junto.csv') # Archivo con los datos conc
 # Filtrar el DataFrame new_libros para encontrar coincidencias
 new_libros = new_libros[~new_libros['title'].isin(junto_df['title'])]
 #new_libros.to_csv('data/procesados/libros_total_koha.csv', index=False) # Guardar el DataFrame resultante de total koha en un archivo CSV
+
+#prueba de commit
