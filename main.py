@@ -6,62 +6,38 @@
 
 #Los datos resultante son de todos los años, los de la caatedra son de primer año. ¿Como puedo filtrar los datos de la biblioteca para que solo sean de primer año?--pensasr mas adelante.
 
-def swap(A, i, j):
- 
-    temp = A[i]
-    A[i] = A[j]
-    A[j] = temp
- 
- 
-# Partición # utilizando el esquema de partición Lomuto
-def partition(a, start, end):
- 
-    # Elija el elemento más a la derecha como pivote de la lista
-    pivot = a[end]
- 
-    # Los elementos # menores que el pivote serán empujados a la izquierda de `pIndex`
-    # Los elementos # más que el pivote se empujarán a la derecha de `pIndex`
-    # elementos iguales pueden ir en cualquier dirección
-    pIndex = start
- 
-    # cada vez que encontramos un elemento menor o igual que el pivote,
-    # `pIndex` se incrementa, y ese elemento se colocaría
-    # antes del pivote.
-    for i in range(start, end):
-        if a[i] <= pivot:
-            swap(a, i, pIndex)
-            pIndex = pIndex + 1
- 
-    # swap `pIndex` con pivote
-    swap(a, end, pIndex)
- 
-    # devuelve `pIndex` (índice del elemento pivote)
-    return pIndex
- 
- 
-# Rutina de clasificación rápida
-def quicksort(a, start, end):
- 
-    # Condición base
-    if start >= end:
-        return
- 
-    # reorganizar elementos a través de pivote
-    pivot = partition(a, start, end)
- 
-    # recurre en la sublista que contiene elementos menores que el pivote
-    quicksort(a, start, pivot - 1)
- 
-    # recurre en la sublista que contiene más elementos que el pivote
-    quicksort(a, pivot + 1, end)
- 
- 
-# Implementación en Python del algoritmo Quicksort
+import pandas as pd
+
+def partition(arr, low, high):
+    i = low - 1
+    pivot = arr[high]
+    
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i = i + 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+def quicksort(arr, low, high):
+    if low < high:
+        pi = partition(arr, low, high)
+        quicksort(arr, low, pi - 1)
+        quicksort(arr, pi + 1, high)
+
 if __name__ == '__main__':
- 
-    a = [9, -3, 5, 2, 6, 8, -6, 1, 3]
- 
-    quicksort(a, 0, len(a) - 1)
- 
-    # imprime la lista ordenada
-    print(a)
+    archivo = pd.read_csv('C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_biblioteca.csv', delimiter=',')
+    columna = 'isbn'  # Reemplaza con el nombre de la columna que deseas ordenar
+    
+    # Convertir la columna en una lista
+    lista = archivo[columna].tolist()
+    
+    # Aplicar quicksort a la lista
+    quicksort(lista, 0, len(lista) - 1)
+    
+    # Reemplazar la columna original con la lista ordenada
+    archivo[columna] = str(lista)
+    
+    # Guardar el DataFrame ordenado en un nuevo archivo CSV
+    archivo.to_csv('C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_biblioteca_ordenado.csv', index=False)
