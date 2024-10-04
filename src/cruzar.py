@@ -1,5 +1,5 @@
 #Funcion para cruzar coincidencias entre la base de datos de la biblioteca y los programas de la catedra.
-
+import pandas as pd
 def cruzar_datos(df_biblioteca, df_catedra, columna):
     """
     Cruza los datos de la biblioteca con los datos de la cátedra.
