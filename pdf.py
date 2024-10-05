@@ -23,7 +23,7 @@ def extraer_informacion(pdf_texto):
 
     # Buscar la bibliografía principal (suponiendo que empieza con 'Bibliografía Principal:')
     bibliografia = re.search(r'Bibliografia Principal:\s*(.*?)\s*Bibliografia Complementaria:', pdf_texto, re.DOTALL)
-    bibliografia = bibliografia.group(1).strip() if bibliografia else 'No encontrado'
+    bibliografia = bibliografia.group(1).strip() if bibliografia else 'No encontrado' #
 
     return carrera, asignatura, bibliografia
 
