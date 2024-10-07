@@ -2,7 +2,9 @@ import os
 import pdfplumber
 import re
 import pandas as pd 
+import sys
 
+sys.path.append(os.path.abspath('C:/Users/Axel/Desktop/Practica-Biblioteca'))
 
 
 # Directorio local donde están los archivos PDF
