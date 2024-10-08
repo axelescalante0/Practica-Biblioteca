@@ -50,6 +50,6 @@ for filename in os.listdir(pdf_directory):
 df = pd.DataFrame(data, columns=["Archivo", "Carrera", "Asignatura", "Bibliografía"])
 
 # Guardar el DataFrame en un archivo Excel
-df.to_excel("informacion_catedra.xlsx", index=False)
+df.to_excel("libros_restantes_tuped.xlsx", index=False)
 
 print("Proceso completado. La información se ha guardado en 'informacion_catedra.xlsx'.")
