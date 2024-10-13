@@ -1,1 +1,2 @@
 > [!TIP]
+> Tip de nota
