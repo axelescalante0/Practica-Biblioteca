@@ -6,8 +6,8 @@ sys.path.append(os.path.abspath('C:/Users/Axel/Desktop/Practica-Biblioteca'))
 
 import pandas as pd
 
-csv = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/crudos/total_koha.csv'
-df = pd.read_csv(csv, delimiter=';')
+csv = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_biblioteca.csv'
+df = pd.read_csv(csv, delimiter=',')
 
 def buscar_libro(df, columna, valor):
     """
@@ -37,6 +37,6 @@ def buscar_libro(df, columna, valor):
 
 
 #eje de prueba
-libro = buscar_libro(df, 'title', 'Introducción a las mediciones de laboratorio')
+libro = buscar_libro(df, 'title', 'edición')
 
-print(libro)
+print(libro.info())
