@@ -1,1 +1,0 @@
-# Funciones para filtrar datos
