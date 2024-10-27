@@ -38,18 +38,18 @@ df_catedra['titulo'] = df_catedra['titulo'].str.replace(':', '').str.replace('/'
 df_catedra = df_catedra[['autor', 'titulo']]
 df_biblioteca = df_biblioteca[['autor', 'titulo']]
 
-
+df_biblioteca['titulo'] = df_biblioteca['titulo'].str.lower().str.strip()
+df_catedra['titulo'] = df_catedra['titulo'].str.lower().str.strip()
 
 # Eliminar duplicados en la bibliografía (un libro contado una vez por cada título y autor)
-bibliografia_unica = df_catedra.drop_duplicates()
+bibliografia_unica = df_catedra.drop_duplicates( subset=['titulo', 'autor'])
 
 # Identificar libros disponibles en la biblioteca basándose en título y autor
-libros_disponibles = bibliografia_unica.merge(df_biblioteca, on=['titulo', 'autor'], how='inner')
+libros_disponibles = bibliografia_unica[bibliografia_unica['titulo'].isin(df_biblioteca['titulo']) & bibliografia_unica['autor'].isin(df_biblioteca['autor'])]
 
 # Calcular porcentaje de disponibilidad
 porcentaje_disponible = (len(libros_disponibles) / len(bibliografia_unica)) * 100
 
 print(f'El {porcentaje_disponible:.2f}% de los libros de la bibliografía está disponible en la biblioteca.')
 
-print(len(bibliografia_unica))
-print(bibliografia_unica)
+print(libros_disponibles)
