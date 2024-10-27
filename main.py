@@ -9,13 +9,47 @@
 from src import ordenamiento
 import pandas as pd
 
-if __name__ == '__main__':
-    archivo = pd.read_csv('C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_biblioteca.csv', delimiter=',')
-    columna = 'isbn'  # Reemplaza con el nombre de la columna que deseas ordenar
-    
-    # Aplicar Quick Sort al DataFrame
-    file = ordenamiento.sorted(archivo, columna)
-    
-    # Guardar el DataFrame ordenado en un nuevo archivo CSV
-    file.to_csv('C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_biblioteca_ordenado.csv', index=False)
-   
+# titulos_autores_biblioteca.csv = contiene los titulos y autores de libros disponible en la biblioteca.
+# bibliografia_programas_proce = contiene los titulos y autores de las catedras de 1re año disponibles en los programas
+
+# Determinar el porcentaje de libros de la catedra que estan en la biblioteca
+
+# Cargar los datos
+
+csv_catedra = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/bibliografia_programas_proce.xlsx'
+csv_biblioteca = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/titulos_autores_biblioteca.csv'
+
+df_catedra = pd.read_excel(csv_catedra)
+df_biblioteca = pd.read_csv(csv_biblioteca, delimiter=',')
+
+# Normalizar títulos y autores para facilitar la comparación
+df_catedra['titulo'] = df_catedra['titulo'].str.lower().str.strip()
+df_catedra['autor'] = df_catedra['autor'].str.lower().str.strip()
+
+# cambiamos los nombres de las columnas que estan en ingles a español
+df_biblioteca.rename(columns={'title':'titulo', 'author':'autor'}, inplace=True)
+df_biblioteca['titulo'] = df_biblioteca['titulo'].str.lower().str.strip()
+df_biblioteca['autor'] = df_biblioteca['autor'].str.lower().str.strip()
+
+# hay titulos que tienen ":" o "/" al final de la cadena, se eliminan
+df_biblioteca['titulo'] = df_biblioteca['titulo'].str.replace(':', '').str.replace('/', '').str.replace('.', '')
+#lo miso para la catedra
+df_catedra['titulo'] = df_catedra['titulo'].str.replace(':', '').str.replace('/', '').str.replace('.', '')
+df_catedra = df_catedra[['autor', 'titulo']]
+df_biblioteca = df_biblioteca[['autor', 'titulo']]
+
+
+
+# Eliminar duplicados en la bibliografía (un libro contado una vez por cada título y autor)
+bibliografia_unica = df_catedra.drop_duplicates()
+
+# Identificar libros disponibles en la biblioteca basándose en título y autor
+libros_disponibles = bibliografia_unica.merge(df_biblioteca, on=['titulo', 'autor'], how='inner')
+
+# Calcular porcentaje de disponibilidad
+porcentaje_disponible = (len(libros_disponibles) / len(bibliografia_unica)) * 100
+
+print(f'El {porcentaje_disponible:.2f}% de los libros de la bibliografía está disponible en la biblioteca.')
+
+print(len(bibliografia_unica))
+print(bibliografia_unica)
