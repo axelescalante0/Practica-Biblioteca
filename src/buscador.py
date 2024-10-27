@@ -37,7 +37,7 @@ def buscar_libro(df, columna, valor):
 
 
 #eje de prueba
-libro = buscar_libro(df, 'title', 'Probabilidad y estadística')
+libro = buscar_libro(df, 'title', 'Estadística para todos')
 
 print(libro)
 
