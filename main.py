@@ -35,6 +35,11 @@ df_biblioteca['autor'] = df_biblioteca['autor'].str.lower().str.strip()
 df_biblioteca['titulo'] = df_biblioteca['titulo'].str.replace(':', '').str.replace('/', '').str.replace('.', '')
 #lo miso para la catedra
 df_catedra['titulo'] = df_catedra['titulo'].str.replace(':', '').str.replace('/', '').str.replace('.', '')
+
+# Eliminar ':' o '/' o '.' solo al final de la cadena
+df_biblioteca['autor'] = df_biblioteca['autor'].str.replace(r'[:/.]+$', '', regex=True)
+df_catedra['autor'] = df_catedra['autor'].str.replace(r'[:/.]+$', '', regex=True)
+
 df_catedra = df_catedra[['autor', 'titulo']]
 df_biblioteca = df_biblioteca[['autor', 'titulo']]
 
