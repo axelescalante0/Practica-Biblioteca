@@ -40,8 +40,8 @@ df_catedra['titulo'] = df_catedra['titulo'].str.replace(':', '').str.replace('/'
 df_biblioteca['autor'] = df_biblioteca['autor'].str.replace(r'[:/.]+$', '', regex=True)
 df_catedra['autor'] = df_catedra['autor'].str.replace(r'[:/.]+$', '', regex=True)
 
-df_catedra = df_catedra[['autor', 'titulo']]
-df_biblioteca = df_biblioteca[['autor', 'titulo']]
+#df_catedra = df_catedra[['autor', 'titulo']]
+#df_biblioteca = df_biblioteca[['autor', 'titulo']]
 
 df_biblioteca['titulo'] = df_biblioteca['titulo'].str.lower().str.strip()
 df_catedra['titulo'] = df_catedra['titulo'].str.lower().str.strip()
@@ -58,3 +58,9 @@ porcentaje_disponible = (len(libros_disponibles) / len(bibliografia_unica)) * 10
 print(f'El {porcentaje_disponible:.2f}% de los libros de la bibliografía está disponible en la biblioteca.')
 
 print(libros_disponibles)
+
+import pandas as pd
+
+df_tuped = libros_disponibles[libros_disponibles['Carrera'] == 'Tecnicatura Universitaria en Procesamiento y Explotación de Datos']
+
+print(df_tuped)
