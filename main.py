@@ -13,7 +13,8 @@ import pandas as pd
 # bibliografia_programas_proce = contiene los titulos y autores de las catedras de 1re año disponibles en los programas
 
 # Determinar el porcentaje de libros de la catedra que estan en la biblioteca
-
+import pandas as pd
+import matplotlib.pyplot as plt
 # Cargar los datos
 
 csv_catedra = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/bibliografia_programas_proce.xlsx'
@@ -22,37 +23,6 @@ csv_biblioteca = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/titu
 df_catedra = pd.read_excel(csv_catedra)
 df_biblioteca = pd.read_csv(csv_biblioteca, delimiter=',')
 
-# Normalizar títulos y autores para facilitar la comparación
-df_catedra['titulo'] = df_catedra['titulo'].str.lower().str.strip()
-df_catedra['autor'] = df_catedra['autor'].str.lower().str.strip()
-
-
-#lo miso para la catedra
-df_catedra['titulo'] = df_catedra['titulo'].str.replace(':', '').str.replace('/', '').str.replace('.', '')
-
-# Eliminar ':' o '/' o '.' solo al final de la cadena
-
-df_catedra['autor'] = df_catedra['autor'].str.replace(r'[:/.]+$', '', regex=True)
-
-
-
-df_catedra['titulo'] = df_catedra['titulo'].str.lower().str.strip()
-
-# Eliminar duplicados en la bibliografía (un libro contado una vez por cada título y autor)
-bibliografia_unica = df_catedra.drop_duplicates( subset=['titulo', 'autor'])
-
-# Identificar libros disponibles en la biblioteca basándose en título y autor
-libros_disponibles = bibliografia_unica[bibliografia_unica['titulo'].isin(df_biblioteca['titulo']) & bibliografia_unica['autor'].isin(df_biblioteca['autor'])]
-
-# Calcular porcentaje de disponibilidad
-porcentaje_disponible = (len(libros_disponibles) / len(bibliografia_unica)) * 100
-
-print(f'El {porcentaje_disponible:.2f}% de los libros de la bibliografía está disponible en la biblioteca.')
-
-print(libros_disponibles)
-
-import pandas as pd
-import matplotlib.pyplot as plt
 
 df_tuped = df_catedra[df_catedra['Carrera'] == 'Tecnicatura Universitaria en Procesamiento y Explotación de Datos']
 
