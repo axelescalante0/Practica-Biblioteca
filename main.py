@@ -8,13 +8,14 @@
 
 from src import ordenamiento
 import pandas as pd
+import plotly.graph_objects as go
 
 # titulos_autores_biblioteca.csv = contiene los titulos y autores de libros disponible en la biblioteca.
 # bibliografia_programas_proce = contiene los titulos y autores de las catedras de 1re año disponibles en los programas
 
 # Determinar el porcentaje de libros de la catedra que estan en la biblioteca
-import pandas as pd
-import matplotlib.pyplot as plt
+
+
 # Cargar los datos
 
 csv_catedra = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/bibliografia_programas_proce.xlsx'
@@ -23,50 +24,6 @@ csv_biblioteca = 'C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/titu
 df_catedra = pd.read_excel(csv_catedra)
 df_biblioteca = pd.read_csv(csv_biblioteca, delimiter=',')
 
-
-df_tuped = df_catedra[df_catedra['Carrera'] == 'Licenciatura en Bioinformática']
-
-
-# Realizar la combinación para encontrar los libros de df_tuped que están en df_biblioteca
-libros_en_biblioteca = df_tuped.merge(df_biblioteca, on=['titulo', 'autor'], how='inner')
-
-
-# Contar el número de libros por asignatura en df_tuped
-conteo_libros_asignatura = df_tuped['Asignatura'].value_counts()
-
-
-#elimino las columnas que no necesito
-libros_en_biblioteca.drop(columns=['origen'], inplace=True)
-#eliminos filas duplicadas
-libros_en_biblioteca.drop_duplicates(inplace=True)
-
-print(libros_en_biblioteca)
-
-# Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de TUPED
-porcentaje_disponible_tuped = (len(libros_en_biblioteca) / len(df_tuped)) * 100
-#print(f'Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de TUPED: {porcentaje_disponible_tuped:.2f}%')
-
-
-# Contar el número de libros disponibles por asignatura en libros_en_biblioteca
-conteo_libros_disponibles_asignatura = libros_en_biblioteca['Asignatura'].value_counts()
-
-# Crear un DataFrame que contenga ambos conteos
-df_conteo = pd.DataFrame({
-    'Total Libros': conteo_libros_asignatura,
-    'Libros Disponibles': conteo_libros_disponibles_asignatura
-}).fillna(0)  # Rellenar NaN con 0
-
-# Crear el gráfico de barras superpuestas
-ax = df_conteo.plot(kind='bar', figsize=(10, 6))
-
-# Añadir etiquetas y título
-ax.set_xlabel('Asignatura')
-ax.set_ylabel('Número de Libros')
-ax.set_title('Conteo de Libros por Asignatura y Disponibilidad en Biblioteca')
-# Rotar las etiquetas del eje x
-ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
-# Mostrar el gráfico
-plt.show()
 
 def disponibilidad(df_catedra,df_biblioteca):
     """ Esta funcion determina el porcentaje de libros para cada carrera separado por asignatura que estan disponible en la biblioteca."""
@@ -80,5 +37,48 @@ def disponibilidad(df_catedra,df_biblioteca):
         libros_en_biblioteca.drop_duplicates(inplace=True)
         porcentaje_disponible = (len(libros_en_biblioteca) / len(df_carrera)) * 100
         print(f'Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de {carrera}: {porcentaje_disponible:.2f}%')
+        conteo_libros_disponibles_asignatura = libros_en_biblioteca['Asignatura'].value_counts()
+
+        # Crear un DataFrame que contenga ambos conteos
+        df_conteo = pd.DataFrame({
+            'Total Libros': conteo_libros_asignatura,
+            'Libros Disponibles': conteo_libros_disponibles_asignatura
+        }).fillna(0)  # Rellenar NaN con 0
+
+        # Crear el gráfico de barras horizontales superpuestas
+        # Crear el gráfico de barras horizontales superpuestas
+        fig = go.Figure()
+
+        # Añadir barras para 'Total Libros'
+        fig.add_trace(go.Bar(
+            y=df_conteo.index,
+            x=df_conteo['Total Libros'],
+            name='Total Libros',
+            orientation='h'
+        ))
+
+        # Añadir barras para 'Libros Disponibles'
+        fig.add_trace(go.Bar(
+            y=df_conteo.index,
+            x=df_conteo['Libros Disponibles'],
+            name='Libros Disponibles',
+            orientation='h'
+        ))
+
+        # Añadir etiquetas y título
+        fig.update_layout(
+            title='Conteo de Libros por Asignatura y Disponibilidad en Biblioteca para la Carrera de ' + carrera,
+            xaxis_title='Número de Libros',
+            yaxis_title='Asignatura',
+            yaxis=dict(tickmode='linear'),
+            barmode='group'
+        )
+        #mostar el grafico
+        fig.show()  
+
+
 
 res = disponibilidad(df_catedra,df_biblioteca)
+
+
+
