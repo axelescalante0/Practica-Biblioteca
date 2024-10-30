@@ -24,17 +24,11 @@ df_catedra = pd.read_excel(csv_catedra)
 df_biblioteca = pd.read_csv(csv_biblioteca, delimiter=',')
 
 
-df_tuped = df_catedra[df_catedra['Carrera'] == 'Tecnicatura Universitaria en Procesamiento y Explotación de Datos']
+df_tuped = df_catedra[df_catedra['Carrera'] == 'Licenciatura en Bioinformática']
 
-print(df_tuped)
 
 # Realizar la combinación para encontrar los libros de df_tuped que están en df_biblioteca
 libros_en_biblioteca = df_tuped.merge(df_biblioteca, on=['titulo', 'autor'], how='inner')
-
-print(libros_en_biblioteca)
-
-# Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de TUPED
-porcentaje_disponible_tuped = (len(libros_en_biblioteca) / len(df_tuped)) * 100
 
 
 # Contar el número de libros por asignatura en df_tuped
@@ -45,6 +39,12 @@ conteo_libros_asignatura = df_tuped['Asignatura'].value_counts()
 libros_en_biblioteca.drop(columns=['origen'], inplace=True)
 #eliminos filas duplicadas
 libros_en_biblioteca.drop_duplicates(inplace=True)
+
+print(libros_en_biblioteca)
+
+# Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de TUPED
+porcentaje_disponible_tuped = (len(libros_en_biblioteca) / len(df_tuped)) * 100
+#print(f'Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de TUPED: {porcentaje_disponible_tuped:.2f}%')
 
 
 # Contar el número de libros disponibles por asignatura en libros_en_biblioteca
@@ -68,5 +68,17 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
 # Mostrar el gráfico
 plt.show()
 
-libros_en_biblioteca.to_csv('C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_en_bibliotecatuped.csv', index=False)
-df_tuped.to_csv('C:/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/libros_tuped.csv', index=False)
+def disponibilidad(df_catedra,df_biblioteca):
+    """ Esta funcion determina el porcentaje de libros para cada carrera separado por asignatura que estan disponible en la biblioteca."""
+
+    listado_carreras = df_catedra['Carrera'].unique()
+    for carrera in listado_carreras:
+        df_carrera = df_catedra[df_catedra['Carrera'] == carrera]
+        conteo_libros_asignatura = df_carrera['Asignatura'].value_counts()
+        libros_en_biblioteca = df_carrera.merge(df_biblioteca, on=['titulo', 'autor'], how='inner')
+        libros_en_biblioteca.drop(columns=['origen'], inplace=True)
+        libros_en_biblioteca.drop_duplicates(inplace=True)
+        porcentaje_disponible = (len(libros_en_biblioteca) / len(df_carrera)) * 100
+        print(f'Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de {carrera}: {porcentaje_disponible:.2f}%')
+
+res = disponibilidad(df_catedra,df_biblioteca)
