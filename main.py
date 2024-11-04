@@ -73,24 +73,7 @@ def disponibilidad(df_catedra,df_biblioteca):
             yaxis=dict(tickmode='linear'),
             barmode='group'
         )
-        #mostar el grafico
-        fig.show()  
 
-        # Crear gráfico de torta para el porcentaje de disponibilidad
-        fig_pie = go.Figure(data=[go.Pie(
-            labels=['Disponible', 'No Disponible'],
-            values=[porcentaje_disponible, 100 - porcentaje_disponible],
-            hole=.3,
-            marker=dict(colors=['#00cc96', '#ff6961'])  # Cambiar colores: verde para disponible, rojo para no disponible
-        )])
-
-        # Añadir título al gráfico de torta
-        fig_pie.update_layout(
-            title='Porcentaje de Disponibilidad de Libros en la Biblioteca para la Carrera de ' + carrera
-        )
-
-        # Mostrar el gráfico de torta
-        fig_pie.show()
 
 
 
