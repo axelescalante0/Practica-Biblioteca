@@ -38,6 +38,9 @@ def disponibilidad(df_catedra,df_biblioteca):
         porcentaje_disponible = (len(libros_en_biblioteca) / len(df_carrera)) * 100
         print(f'Porcentaje de libros de la cátedra que están en la biblioteca para la carrera de {carrera}: {porcentaje_disponible:.2f}%')
         conteo_libros_disponibles_asignatura = libros_en_biblioteca['Asignatura'].value_counts()
+        if carrera == 'Tecnicatura Universitaria en Procesamiento y Explotación de Datos':
+            carrera = 'TUPED'
+
 
         # Crear un DataFrame que contenga ambos conteos
         df_conteo = pd.DataFrame({
@@ -67,13 +70,15 @@ def disponibilidad(df_catedra,df_biblioteca):
 
         # Añadir etiquetas y título
         fig.update_layout(
-            title='Libros por Asignatura y Disponibilidad en Biblioteca para la Carrera de ' + carrera,
+            title='Disponibilidad de Libros por Asignatura en la Biblioteca en la Carrera de ' + carrera,
             xaxis_title='Número de Libros',
             yaxis_title='Asignatura',
             yaxis=dict(tickmode='linear'),
-            barmode='group'
+            barmode='group',
+            font=dict(size=18, color='black')  # Agrandar las etiquetas y cambiar el color a negro más fuerte
         )
-
+        #mostrar el grafico
+        fig.show()
 
 
 
