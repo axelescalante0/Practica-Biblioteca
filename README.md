@@ -1,2 +1,2 @@
 > [!TIP]
-> Tip de nota
+> Realizar dos seguimiento mas
