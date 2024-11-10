@@ -70,7 +70,7 @@ def disponibilidad(df_catedra,df_biblioteca):
 
         # Añadir etiquetas y título
         fig.update_layout(
-            title='Disponibilidad de Libros por Asignatura en la Biblioteca en la Carrera de ' + carrera,
+            title='Disponibilidad de Libros por Asignatura en la Biblioteca en la Carrera: ' + carrera,
             xaxis_title='Número de Libros',
             yaxis_title='Asignatura',
             yaxis=dict(tickmode='linear'),
@@ -79,6 +79,24 @@ def disponibilidad(df_catedra,df_biblioteca):
         )
         #mostrar el grafico
         fig.show()
+        # Crear gráfico de torta para la disponibilidad de libros
+        fig_pie = go.Figure()
+
+        # Añadir datos al gráfico de torta
+        fig_pie.add_trace(go.Pie(
+            labels=['Disponibles', 'No Disponibles'],
+            values=[porcentaje_disponible, 100 - porcentaje_disponible],
+            hole=.3
+        ))
+
+        # Añadir título
+        fig_pie.update_layout(
+            title='Porcentaje de libros  disponibles en la Biblioteca para la Carrera: ' + carrera,
+            font=dict(size=18, color='black')  # Agrandar las etiquetas y cambiar el color a negro más fuerte
+        )
+
+        # Mostrar el gráfico de torta
+        fig_pie.show()
 
 
 
