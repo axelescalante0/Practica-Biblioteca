@@ -103,4 +103,13 @@ def disponibilidad(df_catedra,df_biblioteca):
 res = disponibilidad(df_catedra,df_biblioteca)
 
 
+#libros no disponibles o encontrados en biblioteca
+# Realizar una combinación (merge) para encontrar los libros de cátedra que no están en la biblioteca
+libros_no_disponibles = df_catedra.merge(df_biblioteca, on=['titulo', 'autor'], how='left', indicator=True)
+libros_no_disponibles = libros_no_disponibles[libros_no_disponibles['_merge'] == 'left_only']
 
+# Eliminar la columna '_merge' que se añadió durante la combinación
+libros_no_disponibles = libros_no_disponibles.drop(columns=['_merge'])
+
+#escribir csv 
+libros_no_disponibles.to_csv(':/Users/Axel/Desktop/Practica-Biblioteca/data/procesados/Libros_NO_Disponibles_Biblioteca.csv', index= False)
